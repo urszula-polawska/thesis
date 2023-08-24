@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>REQUEST FORM</title>
+</head>
+<body style="background-color:aquamarine;">
+<h2 style="text-align:center;">MongoDB - user account request form:</h2>
+<h4 style="text-align:center;">on registration, user credentials will be stored 
+for the administrator to create user accounts</h4><hr>
+
+{% if session['username'] %}<!-- when user logged in -->
+    <h3 style="color: green;">*** Credentials are stored for: {{ session['username'] }} ***</h3>
+    <form action="{{ url_for('mongoDB_logout') }}" method="POST">
+        <input type="submit" value="LOGOUT"><hr>
+    </form>
+{% else %}
+
+{% if WRONG_LOGIN_CREDENTIALS %}<!-- prompt for reentering user login credentials -->
+    <h3 style="color: red;">MongoDB login details you entered are not valid</h3>
+{% endif %}
+    <h4 style="color: blue;">Check if your credentials are stored already:</h4>
+        <form action="{{ url_for('mongoDB_login') }}" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" name="username" required="required">
+        <label for="password">Password:</label>
+        <input type="text" name="password" required="required">
+        <input type="submit" value="LOGIN">
+    </form><br><hr>
+
+{% if USERNAME_NOT_AVAILABLE %}<!-- prompt for reentering user registration credentials -->
+    <h3 style="color: red;">Username "{{ request.form['username'] }}" already registered</h3>
+{% endif %}
+    <h4 style="color: blue;">Register new user and store credentials:</h4>
+    <form action="{{ url_for('mongoDB_register') }}" method="POST">
+        <label for="email">Email:</label>
+        <input type="text" name="email" maxlength=20 required="required">
+        <label for="username">Username:</label>
+        <input type="text" name="username" maxlength=20 required="required">
+        <label for="password">Password:</label>
+        <input type="text" name="password" maxlength=20 required="required">
+        <input type="submit" value="REGISTER">
+    </form><br><hr>
+{% endif %}
+</body>
+</html>
